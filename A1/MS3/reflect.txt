@@ -1,0 +1,87 @@
+///////////////////////////////////////////////////////////////////////////
+                               Reflection
+                             Milestone - 3
+Full Name  : Tianwen Wang
+Student ID#: 151583226
+Email      : twang118@myseneca.ca
+Section    : ZAA
+
+Authenticity Declaration:
+I declare this submission is the result of my own work and has not been
+shared with any other student or 3rd party content provider. This submitted
+piece of work is entirely of my own creation.
+///////////////////////////////////////////////////////////////////////////
+
+
+
+1.
+Function 1: inputCharOption() | String Library Function 1: strchr()
+    Code:
+        {
+            // check if the input character in the specified C string
+            ptrFirstChar = strchr(cString, firstChar);
+        }
+    In this function, it is required to check if the input character is in the specified C string.  Without using "strchr()", we need to loop the char array until finding a matched character or reaching the '\0'.
+
+
+Function 2: inputCString() | String Library Function 2: strcpy()
+    Code:
+        {
+            // get the number of characters in the char array
+            length = strlen(str);
+        }
+    In this function, it is required to calculate the input number of characters, which is also the string length.  Instead of traversing the entire array, we can also use strlen() to get the length directly.
+
+Benefits:
+    1) Less coding time.  Most of the time, instead of creating loops and IF/ELSE conditions, it is convenient to directly use the string library functions.  Specifically, if we do not use those functions in MS1, we have to manually loop the arrays, which is time-consuming.
+    2) Readability and Maintainability. As using string library functions usually shortens code length, it increases the code readability significantly; we only need to modify the arguments of the functions if it is required, which also makes the maintenance much easier.
+    3) Running Efficiency.  The string library functions are pre-defined functions, which means they have optimized logic and performance (time/space efficiency) than manually created ones.  For example, in the inputCharOption(), it is easy to forget to set the flag to exit the loop efficiently when finding a match.
+    4) Errors.  Since string library functions are internal standard library functions, using them is less likely to cause errors than manually creating functions; even if errors occur, it is easier to debug because there are a lot of discussions and resources about using those functions that can be accessed online.
+
+
+
+2.
+Variation 1: strcpy(char* dest, const char* src)
+    The strcpy() copies the string from the "source" to the "destination," including the null terminator '\0', and returns the copied string.
+Variation 2: strncpy(char *dest, const char *src, size_t n)
+    The strncpy() is similar to strcpy(), except copying only up to "n" characters from the "source" string to the "destination" string.  Normally, we set "n = len(dest)" to avoid leap overflow errors.
+
+Differences:
+    The main difference is strncpy() allows specifying a maximum number of characters for copying.  However, these two functions create different result depending on the following situations:
+
+        Situation 1: the "destination" string length is less than the "source" length.
+            strcpy(): causes memory overflow errors because the destination string does not have sufficient memory space to store the copied string.
+            strncpy(): if "n" equals the length of the destination string, using strncpy() will not cause errors.  However, it will truncate the source string to the first "n" characters and copy them to the destination without adding the null terminator '\0'.  In order to make it a string, it is required to add '\0' at the end manually.
+
+        Situation 2: the "destination" string is greater equal (has longer length) than the "source" string.
+            strcpy(): copy the source string to the destination, including adding a null terminator '\0' right after the last copied character.
+            strncpy(): if "n" equals the length of the source string, it will copy the entire source string to the destination and keep adding '\0' right after the last character until the length of the copied characters reaches "n".
+
+Preferable: strcpy()
+Code:
+{ 
+    strcpy(phone->description, "CELL");
+}
+
+Explanation: the strcpy() is used in inputPhoneData() to copy the correspondent phone type string to the "description" variable of the structure "Phone," depending on user input.  Since we use inputIntRange() function to validate the input value and have already known the length of all the phone type strings, it is better to use strcpy() compared to strncpy().  According to the differences explained above, if using strncpy(), it is mandatory to manually add a null terminator at the end, which is an extra step.  Moreover, because of the above presented side effects of strncpy(), it is recommended to use strcpy() if possible.  "strncpy is not by origin a 'bounded strcpy,' and the Committee has preferred to recognize existing practice rather than alter the function to better suit it to such use" (Lysator, n.d., String Handling section, para. 4.11).
+
+
+
+3.
+In order to ensure the appointments array is listed in the correct order, we have to do the following things:
+    1) Create a proper logic for array sorting.
+    2) Create a function to concatenate date/time into one integer called "dateTime" as the primary sorting key.
+    3) Create a sort function that is applicable to the situation in MS3.
+    4) Call the function to sort the array right after each time importing/adding new appointments.
+
+Here, I implemented the logic of "Selection Sort".  The logic of this algorithm goes like the following:
+    1) Set the first unsorted element index as the minimum value index.
+    2) Traverse other elements in the array (unsorted part), call the concatenate function and compare each concatenated "dateTime" integer with the current minimum "dateTime".  If the value of the current element is smaller than the value stored in the minimum index, set the minimum index to the current index (minValueIndex = currentIndex).
+    3) After completing traversing, check if the minimum value index changes after initializing.  If it changes, swap the minimum element with the first unsorted element in the array.
+    4) Consider the first element as sorted, and set the next unsorted element as the minimum value index.
+    5) Repeat the above steps (1 to 4) until all the array elements are sorted.
+
+Possible improvement:
+    1) To sort the appointment array, there should be more efficient methods/algorithms for MS3 like quick sort, heap sort, merge sort, shell sort, bucket sort, etc.  However, due to my coding ability and time, I am not able to test each sorting algorithm one by one.
+    2) When removing a patient, it is better to remove its related appointments as well.  Otherwise, the appointment of that patient would become "garbage" since we do not have the patient's info.  However, there are some design issues related to the milestone, making that change complicated to implement.
+    3) It is meaningful to create a "History Clinic Data" to store all the deleted patients' information, which could be used as a database for conveniently retrieving data if the deleted patients return in the future.

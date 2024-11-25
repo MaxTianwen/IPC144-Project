@@ -1,9 +1,9 @@
 /*/////////////////////////////////////////////////////////////////////////
                         Assignment 1 - Milestone 2
-Full Name  :
-Student ID#:
-Email      :
-Section    :
+Full Name  : Tianwen Wang
+Student ID#: 151583226
+Email      : twang118@myseneca.ca
+Section    : ZAA
 
 Authenticity Declaration:
 I declare this submission is the result of my own work and has not been
@@ -14,6 +14,7 @@ piece of work is entirely of my own creation.
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
+#include <string.h>
 
 // include the user library "core" so we can use those functions
 #include "core.h"
@@ -186,24 +187,157 @@ void menuPatientEdit(struct Patient* patient)
 // ---------------------------------------------------------------------------
 
 // Display's all patient data in the FMT_FORM | FMT_TABLE format
-// (ToDo: PUT THE FUNCTION DEFINITION BELOW)
+void displayAllPatients(const struct Patient patient[], int max, int fmt)
+{
+    int i;
+    int hasData = 0;
 
+    // check whether it is a table format 
+    if (fmt == FMT_TABLE)
+    {
+        displayPatientTableHeader();
+    }
+    
+    for (i = 0; i < max; ++i)
+    {
+        if (patient[i].patientNumber)
+        {
+            displayPatientData(&patient[i], fmt);
+            hasData = 1;
+        }
+    }
+
+    // if no eligible records to display
+    if (!hasData)
+    {
+        printf("*** No records found ***\n");
+    }
+    putchar('\n');
+}
 
 
 // Search for a patient record based on patient number or phone number
-// (ToDo: PUT THE FUNCTION DEFINITION BELOW)
+void searchPatientData(const struct Patient patient[], int max)
+{
+    int selection;
+
+    do {
+        // display search menu header
+        printf("Search Options\n");
+        printf("==========================\n");
+        printf("1) By patient number\n");
+        printf("2) By phone number\n");
+        printf("..........................\n");
+        printf("0) Previous menu\n");
+        printf("..........................\n");
+
+        // get user input of search option
+        printf("Selection: ");
+        selection = inputIntRange(0, 2);
+        putchar('\n');
+
+        if (selection == 1)
+        {
+            searchPatientByPatientNumber(patient, max);
+        }
+        else if (selection == 2)
+        {
+            searchPatientByPhoneNumber(patient, max);
+        }
+
+    } while (selection);
+}
 
 
 // Add a new patient record to the patient array
-// (ToDo: PUT THE FUNCTION DEFINITION BELOW)
+void addPatient(struct Patient patient[], int max)
+{
+    int index;
+    
+    // look for an available position in patient list
+    index = findPatientIndexByPatientNum(0, patient, max);
+
+    // add new patient data if there's a position available
+    if (index != -1)
+    {
+        patient[index].patientNumber = nextPatientNumber(patient, max);
+        inputPatient(&patient[index]);
+        printf("*** New patient record added ***\n\n");
+    }
+    else
+    {
+        printf("ERROR: Patient listing is FULL!\n\n");
+    }
+}
+
 
 
 // Edit a patient record from the patient array
-// (ToDo: PUT THE FUNCTION DEFINITION BELOW)
+void editPatient(struct Patient patient[], int max)
+{
+    int patientNum, index;
+
+    // get input of patient number
+    printf("Enter the patient number: ");
+    patientNum = inputIntPositive();
+    putchar('\n');
+
+    // search the patient number
+    index = findPatientIndexByPatientNum(patientNum, patient, max);
+
+    // check the search result
+    if (index == -1)
+    {
+        printf("ERROR: Patient record not found!\n\n");
+    }
+    else
+    {
+        menuPatientEdit(&patient[index]);
+    }
+}
 
 
 // Remove a patient record from the patient array
-// (ToDo: PUT THE FUNCTION DEFINITION BELOW)
+void removePatient(struct Patient patient[], int max)
+{
+    int patientNum, index;
+
+    char yesOrNo;
+    char cString[] = "yn";
+
+    struct Patient emptyPatient = { 0 };
+
+    // get input of patient number
+    printf("Enter the patient number: ");
+    patientNum = inputIntPositive();
+    putchar('\n');
+
+    // search the patient number
+    index = findPatientIndexByPatientNum(patientNum, patient, max);
+
+    // check the search result
+    if (index != -1)
+    {
+        displayPatientData(&patient[index], FMT_FORM);
+        putchar('\n');
+        printf("Are you sure you want to remove this patient record? (y/n): ");
+        yesOrNo = inputCharOption(cString);
+
+        if (yesOrNo == 'y')
+        {
+            patient[index] = emptyPatient;
+            printf("Patient record has been removed!\n\n");
+        }
+        else
+        {
+            printf("Operation aborted.\n\n");
+        }
+    }
+    else
+    {
+        printf("ERROR: Patient record not found!\n\n");
+    }
+}
 
 
 
@@ -212,19 +346,113 @@ void menuPatientEdit(struct Patient* patient)
 //////////////////////////////////////
 
 // Search and display patient record by patient number (form)
-// (ToDo: PUT THE FUNCTION DEFINITION BELOW)
+void searchPatientByPatientNumber(const struct Patient patient[], int max)
+{
+    int patientNum, index;
+
+    // get input of patient number
+    printf("Search by patient number: ");
+    patientNum = inputIntPositive();
+
+    // search by patient number
+    index = findPatientIndexByPatientNum(patientNum, patient, max);
+
+    // display the search result
+    putchar('\n');
+    if (index != -1)
+    {
+        displayPatientData(&patient[index], FMT_FORM);
+    }
+    else
+    {
+        printf("*** No records found ***\n");
+    }
+    putchar('\n');
+    suspend();
+}
 
 
 // Search and display patient records by phone number (tabular)
-// (ToDo: PUT THE FUNCTION DEFINITION BELOW)
+void searchPatientByPhoneNumber(const struct Patient patient[], int max)
+{
+    int i;
+    int found;
+
+    char phoneNum[PHONE_LEN + 1] = { 0 };
+
+    // get input of patient number
+    printf("Search by phone number: ");
+    inputCString(phoneNum, PHONE_LEN, PHONE_LEN);
+    putchar('\n');
+
+    // display table header of result
+    displayPatientTableHeader();
+
+    // search for matchs
+    found = 0;
+    for (i = 0; i < max; ++i)
+    {
+        if (!strcmp(phoneNum, patient[i].phone.number))
+        {
+            found = 1;
+            displayPatientData(&patient[i], FMT_TABLE);
+        }
+    }
+
+    // no matchs
+    if (found == 0)
+    {
+        putchar('\n');
+        printf("*** No records found ***\n");
+    }
+    putchar('\n');
+    suspend();
+}
 
 
 // Get the next highest patient number
-// (ToDo: PUT THE FUNCTION DEFINITION BELOW)
+int nextPatientNumber(const struct Patient patient[], int max)
+{
+    int i;
+    int largestNum = 0;
+
+    for (i = 0; i < max; ++i)
+    {
+        if (patient[i].patientNumber > largestNum)
+        {
+            largestNum = patient[i].patientNumber;
+        }
+    }
+
+    return largestNum + 1;
+}
 
 
 // Find the patient array index by patient number (returns -1 if not found)
-// (ToDo: PUT THE FUNCTION DEFINITION BELOW)
+int findPatientIndexByPatientNum(int patientNumber,
+                                 const struct Patient patient[], int max)
+{
+    int i;
+    int found = 0;
+
+    // search the matched element
+    for (i = 0; i < max && !(found); ++i)
+    {
+        if (patientNumber == patient[i].patientNumber)
+        {
+            found = 1;
+        }
+    }
+
+    // no matchs
+    if (!found)
+    {
+        i = 0;
+    }
+
+    // return the actual patient index
+    return i - 1;
+}
 
 
 
@@ -233,8 +461,66 @@ void menuPatientEdit(struct Patient* patient)
 //////////////////////////////////////
 
 // Get user input for a new patient record
-// (ToDo: PUT THE FUNCTION DEFINITION BELOW)
+void inputPatient(struct Patient* patient)
+{
+    // header
+    printf("Patient Data Input\n");
+    printf("------------------\n");
+
+    // get input of new patient's name
+    printf("Number: %05d\n", patient->patientNumber);
+    printf("Name  : ");
+    inputCString(patient->name, 1, NAME_LEN);
+    putchar('\n');
+
+    // get input of new patient's phone
+    inputPhoneData(&(patient->phone));
+}
 
 
 // Get user input for phone contact information
-// (ToDo: PUT THE FUNCTION DEFINITION BELOW)
+void inputPhoneData(struct Phone* phone)
+{
+    int phoneType;
+
+    // header
+    printf("Phone Information\n");
+    printf("-----------------\n");
+
+    // prompt for choosing phone type
+    printf("How will the patient like to be contacted?\n");
+    printf("1. Cell\n");
+    printf("2. Home\n");
+    printf("3. Work\n");
+    printf("4. TBD\n");
+    printf("Selection: ");
+    phoneType = inputIntRange(1, 4);
+    putchar('\n');
+
+    // check phone type
+    switch (phoneType) 
+    {
+    case 1:
+            strcpy(phone->description, "CELL");
+            break;
+    case 2:
+            strcpy(phone->description, "HOME");
+            break;    
+    case 3:
+            strcpy(phone->description, "WORK");
+            break;
+    case 4:
+            strcpy(phone->description, "TBD");
+            strcpy(phone->number, "");
+            break;
+    }
+
+    // input phone number if phone type is not TBD
+    if (phoneType != 4)
+    {
+        printf("Contact: %s\n", phone->description);
+        printf("Number : ");
+        inputCString(phone->number, PHONE_LEN, PHONE_LEN);
+        putchar('\n');
+    }
+}

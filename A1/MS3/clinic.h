@@ -1,9 +1,9 @@
 /*/////////////////////////////////////////////////////////////////////////
                         Assignment 1 - Milestone 3
-Full Name  :
-Student ID#:
-Email      :
-Section    :
+Full Name  : Tianwen Wang
+Student ID#: 151583226
+Email      : twang118@myseneca.ca
+Section    : ZAA
 
 Authenticity Declaration:
 I declare this submission is the result of my own work and has not been
@@ -34,8 +34,38 @@ piece of work is entirely of my own creation.
 #define PHONE_LEN 10
 
 
+
 // MS#3 Additional macro's:
-// ToDo:
+// Records and data field
+#define ALL_RECORDS 1
+#define NOT_ALL_RECORDS 0
+#define DATA_FIELD 1
+#define NO_DATA_FIELD 0
+
+// DateTime
+#define DATETIME_LEN 12
+
+// Date
+// Day
+#define FIRST_DAY 1
+
+// Month
+#define FIRST_MONTH 1
+#define LAST_MONTH 12
+
+// Time
+#define OPER_START 1000
+#define OPER_END 1400
+
+// Hour
+#define MIN_HOUR 0
+#define MAX_HOUR 23
+
+// Minute
+#define MIN_MINUTE 0
+#define MAX_MINUTE 59
+#define INTERVAL_MINUTE 30
+
 
 
 //////////////////////////////////////
@@ -43,25 +73,46 @@ piece of work is entirely of my own creation.
 //////////////////////////////////////
 
 // Data type: Phone
-// (Copy your code from MS#2)
-
+struct Phone
+{
+    char description[PHONE_DESC_LEN + 1];
+    char number[PHONE_LEN + 1];
+};
 
 // Data type: Patient 
-// (Copy your code from MS#2)
+struct Patient
+{
+    int patientNumber;
+    char name[NAME_LEN + 1];
+    struct Phone phone;
+};
 
 // ------------------- MS#3 -------------------
 
 // Data type: Time
-// ToDo:
+struct Time
+{
+    int hour;
+    int min;
+};
 
 
 // Data type: Date
-// ToDo:
+struct Date
+{
+    int year;
+    int month;
+    int day;
+};
 
 
 // Data type: Appointment
-// ToDo:
-
+struct Appointment
+{
+    int patientNumber;
+    struct Date date;
+    struct Time time;
+};
 
 
 // ClinicData type: Provided to student
@@ -93,6 +144,7 @@ void displayScheduleTableHeader(const struct Date* date, int isAllRecords);
 void displayScheduleData(const struct Patient* patient,
                          const struct Appointment* appoint,
                          int includeDateField);
+
 
 
 //////////////////////////////////////
@@ -127,24 +179,24 @@ void editPatient(struct Patient patient[], int max);
 void removePatient(struct Patient patient[], int max);
 
 
+
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // Milestone #3 mandatory functions...
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 // View ALL scheduled appointments
-// Todo:
-
+void viewAllAppointments(const struct ClinicData* data);
 
 // View appointment schedule for the user input date
-// Todo:
-
+void viewAppointmentSchedule(const struct ClinicData* data);
 
 // Add an appointment record to the appointment array
-// Todo:
-
+void addAppointment(struct Appointment appoints[], int maxAppointments,
+                    struct Patient patients[], int maxPatient);
 
 // Remove an appointment record from the appointment array
-// Todo:
+void removeAppointment(struct Appointment appoints[], int maxAppointments,
+                       struct Patient patients[], int maxPatient);
 
 
 
@@ -152,6 +204,7 @@ void removePatient(struct Patient patient[], int max);
 // UTILITY FUNCTIONS
 //////////////////////////////////////
 
+// Patient Utility Functions
 // Search and display patient record by patient number (form)
 void searchPatientByPatientNumber(const struct Patient patient[], int max);
 
@@ -162,8 +215,30 @@ void searchPatientByPhoneNumber(const struct Patient patient[], int max);
 int nextPatientNumber(const struct Patient patient[], int max);
 
 // Find the patient array index by patient number (returns -1 if not found)
-int findPatientIndexByPatientNum(int patientNumber,
-                                 const struct Patient patient[], int max);
+int findPatientIndexByPatientNum(int patientNumber, const struct Patient patient[], int max);
+
+// Check if the specified patient number exists in the patient array (return 0 if not exists)
+int checkHasPatientNum(int patientNumber, const struct Patient patient[], int max);
+
+
+// Appointment Utility Functions
+// Sort appointments by datetime using selection sort (ascending)
+void sortAppointmentsByDateTime(struct Appointment appoints[], int max);
+
+// search and display the specified appointment record by date
+void searchAppointmentIndexByDate(const struct Date searchDate, struct Appointment appoints[], 
+                                  int maxAppointments, struct Patient patients[], int maxPatient);
+
+// find the available position index for new appointment (return -1 if not found)
+int findAppointmentIndexByPatientNum(int patientNumber, 
+                                     const struct Appointment appoints[], int max);
+
+// Check if the entered appointment time slot has been occupied;
+int checkTimeSlotByDateTime(long long int dateTime, const struct Appointment appoints[], int max);
+
+// Concatenate date and time to an integer type called dateTime
+long long int concatDateTime(const struct Date* date, const struct Time* time);
+
 
 
 //////////////////////////////////////
@@ -176,6 +251,11 @@ void inputPatient(struct Patient* patient);
 // Get user input for phone contact information
 void inputPhoneData(struct Phone* phone);
 
+// Get user input for date
+void inputDate(struct Date* date);
+
+// Get user input for time
+void inputTime(struct Time* time);
 
 
 

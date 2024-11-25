@@ -3,10 +3,10 @@
 
 /*/////////////////////////////////////////////////////////////////////////
                         Assignment 1 - Milestone 1
-Full Name  :
-Student ID#:
-Email      :
-Section    :
+Full Name  : Tianwen Wang
+Student ID#: 151583226
+Email      : twang118@myseneca.ca
+Section    : ZAA
 
 Authenticity Declaration:
 I declare this submission is the result of my own work and has not been
@@ -73,15 +73,15 @@ int main(void)
     test03_inputIntRange();
     test04_inputIntRange();
 
-    // Char tester
+    //// Char tester
     test05_inputCharOption();
 
-    // C string testers
+    //// C string testers
     test06_inputCString();
     test07_inputCString();
     test08_inputCString();
 
-    // phone
+    //// phone
     test09_displayPhone();
 
     printf("Assignment #1 Milestone #1 testing completed!\n");

@@ -1,0 +1,126 @@
+MS#3
+==================================================
+- Addresses option #2 from main menu: "APPOINTMENT Management"
+- Appointment menu is provided"
+	menuAppointment
+
+- Other Functions provided: 
+	displayScheduleTableHeader
+	displayScheduleData
+
+- Prototypes: 
+	importPatients
+	importAppointments
+
+//////////////////////////////////////////////////
+- NEED 3 NEW structures:
+	Time
+	Date
+	Appointment
+
+- NEED 6 NEW functions:
+	1. importPatients
+	2. importAppointments
+	3. viewAllAppointments
+	4. viewAppointmentSchedule
+	5. addAppointment
+	6. removeAppointment
+
+File/Data Importing:
+- Caution: Data files may contain more records than the arrays have been sized for!
+	o You must respect the array sizes as defined in the main... you can't change their sizes!
+
+Viewing Appointments (sorting):
+- Please review Course topic: Algorithms located in the refinements section of the course notes
+	o Also, please review the posted source code example I put on Teams for Week #12 (folder: "Sorting")
+		- Contains a link to a "visual" example of many sorting algorithms
+		- I would strongly suggest the "selection" sort method, but that or bubble sort is fine
+		  for this assignment.
+		- Do NOT use:
+			- qsort, merge, quick sort, or insert sorts
+	o You will require sorting for the schedules when viewing appointments
+		- Based on: Year, Month, Day, Hour, Minute
+		- My strong hint: find a way to represent all of these fields as 1
+			o Caution: It's not as simple as concatenating them together since many
+			           fields are zero padded but the value by itself is single digit
+					   and this changes the precision if not done correctly.
+	
+--------------------------------------------------
+MAIN:
+- Now includes appointment data
+	Added to the "ClinicData" structure (see clinic.h)
+	
+- Must read data from 2 files:
+	1. patient data		("patientData.txt")
+	2. appointment data	("appointmentData.txt")
+
+--------------------------------------------------
+Summary:
+- You have several resources to review that should be reviewed
+  to help you understand what is needed and what needs to be done:
+	1. PDF instructions
+	2. The provided source code (main, clinic.c/h)
+	3. The data files (patient and appointment .txt files)
+	4. Sample output submission text file
+
+- You are to create additional functions where necessary
+	Function Candidates:
+	- Repeating tasks (avoid redundancy)
+	- Functions that are too long with multiple tasks
+	HINT: There are a lot of similarities in how the patient
+	      management logic works and how the appointment management
+		  part should work... you should probably mirror those things...
+
+- Placement of new functions should be thought out... 
+  What module and sub-section should it be placed?
+	MODULES:
+		Core	(general; meant for any project)
+		Clinic	(specific to the clinic logic)
+		
+	SUB-SECTIONS
+		Display?
+		Menu?
+		User Input?
+		File related?
+		Utility? (helper non-specific category)
+
+- Final submission of work for the term:
+	- Will be more critically graded
+	- Demonstrate your best ability 
+		o Summarizes what you have learned in the course in an applied way
+		o Code should be thoroughly tested beyond what is done for submission
+			- HOW SHOULD it work? etc... 
+		o Code should be REFINED and made to be as efficient as possible that does not
+		  compromise readability and maintainability of the code
+	- Remove debugging/dev. comments
+	- Ensure function PROTOTYPES all have meaningful COMMENTS as per best practices
+		o Should be carried over to the function DEFINITION as well
+	- Sequence of prototypes and definitions should be in the SAME ORDER
+		o What if not working in IDE? ex Matrix vi editor... locating functions can be a challenge
+	- Overall readability/maintainability:
+		o best-practices are respected; variable declarations, naming etc.
+		o Formatting/style: 
+			: consistent
+			: no extra meaningless vertical spaces (single blank lines when necessary)
+			: all code blocks have curly braces even for single line statements
+			: adhere to the 80-100 column widths and apply multi-line statements when necessary
+			: indentation/tabs
+	- APPLIED ALL THE FIXES IDENTIFIED FROM PREVIOUS MILESTONE FEEDBACK/grading
+		o Tell me I didn't waste my time giving you feedback from prior reviews
+		o Heavier deductions will be applied for things that should have been fixed
+	- Code MUST be portable/cross-platform compliant:
+		o Compiles cleanly and runs correctly on both
+			1. Windows (Visual Studio compiler)
+			2. Linux (gcc compiler)
+
+- Reflection
+	- DO NOT include the question!
+	- Adhere to word counts (any code samples are not counted)
+	- DO NOT BE REDUNDANT; if I have to read a book because you unnecessarily added 
+	  extra words that restate previous thoughts major deductions will be applied
+	- Answer the question and stay on-topic; 
+		o Don't provide unrelated details/explanations
+	- Definitely should not have any spelling errors
+	- Grammar should be appropriate at a college level (warning: generative AI is out of the question!)
+	- How long did it take you to complete MS#3? 
+		o The time you apply to the reflection should be near the same!

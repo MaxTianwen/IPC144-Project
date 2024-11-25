@@ -1,9 +1,9 @@
 /*/////////////////////////////////////////////////////////////////////////
                         Assignment 1 - Milestone 3
-Full Name  :
-Student ID#:
-Email      :
-Section    :
+Full Name  : Tianwen Wang
+Student ID#: 151583226
+Email      : twang118@myseneca.ca
+Section    : ZAA
 
 Authenticity Declaration:
 I declare this submission is the result of my own work and has not been
@@ -19,6 +19,10 @@ piece of work is entirely of my own creation.
 // !!! DO NOT DELETE THE BELOW 2 LINES !!!
 #ifndef CORE_H
 #define CORE_H
+
+#define STR_LEN 2000
+#define FMT_LEN 20
+#define NUM_DIGITS 10
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // 
@@ -48,7 +52,32 @@ void suspend(void);
 // USER INPUT FUNCTIONS
 //////////////////////////////////////
 
+// Get a valid integer input
+int inputInt(void);
 
+// Get a valid positive integer input
+int inputIntPositive(void);
+
+// Get an integer input within the specified range
+int inputIntRange(int lowerBound, int upperBound);
+
+// Get a char input matches any of the characters in the specified C string array
+char inputCharOption(const char cStringArr[]);
+
+// Get a C string input with a length between specified range
+void inputCString(char cString[], int minLen, int maxLen);
+
+// Display a formatted phone number that has exact 10 digits
+void displayFormattedPhone(const char cString[]);
+
+
+
+//////////////////////////////////////
+// UTILITY FUNCTIONS
+//////////////////////////////////////
+
+// Check if it is a leap year
+int checkLeapYear(int year);
 
 
 // !!! DO NOT DELETE THE BELOW LINE !!!

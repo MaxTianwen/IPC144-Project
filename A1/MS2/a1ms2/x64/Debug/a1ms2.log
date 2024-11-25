@@ -1,0 +1,4 @@
+﻿  clinic.c
+E:\OneDrive\Seneca Program\CPA\24Winter\IPC144\IPC-Project\A1\MS2\clinic.c(395,31): warning C4047: 'function': 'const char *' differs in levels of indirection from 'const char (*)[11]'
+E:\OneDrive\Seneca Program\CPA\24Winter\IPC144\IPC-Project\A1\MS2\clinic.c(395,31): warning C4024: 'strcmp': different types for formal and actual parameter 2
+  a1ms2.vcxproj -> E:\OneDrive\Seneca Program\CPA\24Winter\IPC144\IPC-Project\A1\MS2\x64\Debug\a1ms2.exe
